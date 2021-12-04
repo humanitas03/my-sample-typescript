@@ -5,6 +5,7 @@ import Control from "./components/Control";
 import ReadContent from "./components/ReadContent";
 import CreateContent from "./components/CreateContent";
 import ContentList from "./components/ContentList";
+import UpdateContent from "./components/UpdateContent";
 
 export type ContentType = {
     id: number;
@@ -41,12 +42,34 @@ const App : React.FC = () =>{
         addContent({id:contents.length + 1, title: _title, desc: _desc})
     }
 
+    const onSubmitUpdate = (_id: number, _title:string, _desc:string) => {
+        // update content to state.contents
+        console.log("[App.js] : id : "+_id)
+        console.log("[App.js] : title : "+_title)
+        console.log("[App.js] : desc : "+_desc)
+        var _contents = Array.from(contents)
+        // var i = 0;
+        // while(i < _contents.length) {
+        //     if(_contents[i].id === _id) {
+        //         _contents[i] = {id:_id, title:_title, desc:_desc};
+        //         break;
+        //     }
+        //     i = i+1;
+        // }
+        _contents.splice(_id-1, 1, {id:_id, title:_title, desc:_desc})
+        setContents(_contents)
+        console.log("[App.js] update : " + contents)
+    }
+
     const onChangePage = (id: number) => {
         setMode('read');
         setSelectedContentId(id);
     }
 
+
+
     let _article
+
     if(mode === 'welcome'){
         _article = <ReadContent title={contentType.title} desc={contentType.desc} />
     } else if (mode==='read'){
@@ -61,6 +84,8 @@ const App : React.FC = () =>{
         }
     } else if (mode === 'create') {
         _article = <CreateContent onSubmitCreate={onSubmitCreate}/>
+    } else if (mode === 'update') {
+        _article = <UpdateContent data={contents[selectedContentId-1]} onSubmitUpdate={onSubmitUpdate}/>
     }
 
 
