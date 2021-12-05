@@ -66,6 +66,13 @@ const App : React.FC = () =>{
         setSelectedContentId(id);
     }
 
+    const onSubmitDelete = (_id: number) => {
+        var _contents = Array.from(contents)
+        _contents.splice(_id,1)
+        console.log("[App.js] delete : " + contents)
+        setContents(_contents)
+    }
+
 
 
     let _article
@@ -86,6 +93,9 @@ const App : React.FC = () =>{
         _article = <CreateContent onSubmitCreate={onSubmitCreate}/>
     } else if (mode === 'update') {
         _article = <UpdateContent data={contents[selectedContentId-1]} onSubmitUpdate={onSubmitUpdate}/>
+    } else if (mode === 'delete') {
+        onSubmitDelete(selectedContentId-1)
+        setMode('read')
     }
 
 
